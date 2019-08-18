@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+app.title = '多 X 轴示例';
+
+var colors = ['#5793f3', '#d14a61', '#675bba'];
+
+
+option = {
+    color: colors[1],
+
+    tooltip: {
+        trigger: 'none',
+        axisPointer: {
+            type: 'cross'
+        }
+    },
+    legend: {
+        data:['CSDN访客量监视图']
+    },
+    grid: {
+        top: 70,
+        bottom: 50
+    },
+    xAxis: [
+        {
+            type: 'category',
+            axisTick: {
+                alignWithLabel: true
+            },
+            axisLine: {
+                onZero: false,
+            },
+            axisPointer: {
+                label: {
+                    formatter: function (params) {
+                        return '访客量  ' + params.value
+                            + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+                    }
+                }
+            },
+            data: {{ now_time }}
+        },
+    ],
+    yAxis: [
+        {
+            type: 'value'
+        }
+    ],
+    series: [
+        {
+            name:'2016 降水量',
+            type:'line',
+            smooth: true,
+            data: {{ visitor }}
+        }
+    ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>

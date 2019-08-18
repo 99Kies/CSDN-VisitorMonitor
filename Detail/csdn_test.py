@@ -1,0 +1,197 @@
+import requests
+from pyquery import PyQuery as pq
+import re
+import matplotlib.pyplot as plt
+import time
+from numpy import *
+import csv
+import os
+import operator
+
+def get_read_number(page):
+    all_read = 0
+    count = 0
+    title_msg = {}
+    for i in range(1,page+1):
+        url = 'https://blog.csdn.net/qq_19381989/article/list/{}'.format(i)
+        # print(url)
+        r = requests.get(url)
+        r.encoding = r.apparent_encoding
+        doc = pq(r.text)
+        items = doc('#mainBox > main > div.article-list > div').items()
+        for item in items:
+            project = {
+                'title': item.find('h4 > a').text(),
+                'read': item.find('div.info-box.d-flex.align-content-center > p:nth-child(3) > span > span').text(),
+                'talk':item.find('div.info-box.d-flex.align-content-center > p:nth-child(5) > span > span').text(),
+            }
+            flag = 1
+            for example in project:
+                # if project['read'] is '' or '原' not in project['title']:
+                if project['read'] is '':
+                    flag = 0
+            if flag == 1:
+                title_msg[project['title']] = project['read']
+                all_read += int(project['read'])
+                count += 1
+    return str(all_read), time.strftime("%H:%M:%S",time.localtime(time.time())),title_msg
+
+def detail_msg_save(title_msg):
+    msg_path = './Read_msg'
+    filename = msg_path + os.path.sep +'detail_msg.csv'
+    with open(filename,'w', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile, dialect='unix')
+        for title in title_msg:
+            writer.writerow((title,title_msg[title]))
+
+def is_yesterday_yn():
+    '''
+    每次保存时都打开存储访客数据的文件判断一下最后一次保存的是否为昨天，若是则进行爬取
+    若没有访客数据的文件时也要进行爬虫
+    :param filename: 访客数据文件名
+    :return: True/False True：需要爬虫。False：无需爬虫
+    '''
+    msg_path = 'Test_msg'
+    today = time.strftime("%H:%M:%S",time.localtime(time.time()))
+    filename = msg_path + os.path.sep + 'test_msg.csv'
+    if not os.path.exists(msg_path):
+        return True
+    with open(filename,'r',encoding='utf-8') as csvfile:
+        reader = str(csvfile.readlines())
+        print(reader)
+    if today in reader:
+        print('is Today')
+        return False
+    else:
+        print('isn\'t today, you need update!')
+        return True
+
+
+def write_to_file(all_read, date):
+    msg_path = 'Read_msg'
+    filename = msg_path + os.path.sep +'read_msg.csv'
+    if not os.path.exists(msg_path):
+        os.mkdir(msg_path)
+        with open(filename, 'a', encoding='utf-8') as csvfile:
+            writer = csv.writer(csvfile, dialect='unix')
+            writer.writerow(['read','date'])
+    try:
+        with open(filename,'a',encoding='utf-8') as csvfile:
+            writer = csv.writer(csvfile, dialect='unix')
+            writer.writerow((all_read,date))
+    except Exception as e:
+        print(e)
+
+def compare_detail_msg(title_msg):
+    '''
+    :param title_msg: 获得到的每篇文章的访客量
+    :return: 返回上次保存和这次更新的变化
+    '''
+    change_ = {}
+    old_msg = {}
+    msg_path = './Read_msg'
+    filename = msg_path + os.path.sep + 'detail_msg.csv'
+    file_compare_day = msg_path + os.path.sep + 'compare_day_msg.csv'
+    with open(filename, 'r',encoding='utf-8') as csvfile:
+        res = csv.reader(csvfile)
+        for row in list(res):
+            old_msg[row[0]] = row[1]
+    for title in title_msg:
+        change_[title] = int(title_msg[title]) - int(old_msg[title])
+    sorted_dict = sorted(change_.items(), key=operator.itemgetter(1), reverse=True)
+    #对变化过的数据按照访客量进行排序，输出更新变化最大的五篇文章
+    print('日变化：',sorted_dict[:5])
+    save_dict_msg(file_compare_day,change_)
+    get_last_change_msg(change_)
+    #记录文章浏览量总变化
+
+def get_last_change_msg(change_now):
+    '''
+    为了获得每篇文章的访客变化
+    :param change_now: 传入今天增长的访客量
+    :return: 返回今天增长的访客量加上从前增长的访客量
+    '''
+    msg_path = './Read_msg'
+    ago_filename = msg_path + os.path.sep + 'compare_day_msg.csv'
+    file_compare_all = msg_path + os.path.sep + 'compare_all_msg.csv'
+    change_ago = {}
+    change_all = {}
+    if not os.path.exists(file_compare_all):
+        #第一次运行的时候，用于判断是否有compare_all_msg.csv文件，第一次的change_ago取compare_day_msg.csv种的日变化，就是初始化咯
+        with open(ago_filename,'r',encoding='gb18030') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                change_ago[row[0]] = row[1]
+    else:
+        with open(file_compare_all,'r',encoding='gb18030') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                change_ago[row[0]] = row[1]
+    for title in change_ago:
+        change_all[title] = int(change_ago[title]) + int(change_now[title])
+    sorted_dict = sorted(change_all.items(), key=operator.itemgetter(1), reverse=True)
+    print('总变化：',sorted_dict[:5])
+    save_dict_msg(file_compare_all,change_all)
+
+def save_dict_msg(filename,msgs):
+    '''
+    用于保存字典数据
+    :param filename: 文件名
+    :param msgs: 字典数据
+    :return:
+    '''
+    try:
+        with open(filename, 'w') as csvfile:
+            writer = csv.writer(csvfile, dialect='unix')
+            for key in msgs:
+                writer.writerow((key, msgs[key]))
+    except:
+        print('save_dict Error!!!',filename)
+
+def update_msg():
+    Detail_path = './Read_msg/read_msg.csv'
+    if is_yesterday_yn():
+        all_read, date, title_msg = get_read_number(3)
+        if os.path.exists(Detail_path):
+            print('you_should_compare_your_msg')
+            compare_detail_msg(title_msg)
+            detail_msg_save(title_msg)
+        else:
+            print('first_save')
+            detail_msg_save(title_msg)
+        write_to_file(all_read, date)
+
+
+
+def plot_show_msg(filename):
+    try:
+        xtime = []
+        yread = []
+        with open(filename,'r',encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in list(reader)[1:]:
+                xtime.append(row[1])
+                yread.append(row[0])
+    except:
+        print('Read Error')
+    ax = array(xtime)
+    ay = array(yread)
+    # plt.ion()
+    plt.close()
+    plt.plot(ax,ay)
+    plt.xticks(rotation=70)
+    plt.margins(0.08)
+    plt.subplots_adjust(bottom=0.15)
+    plt.xlabel("Date")
+    plt.ylabel("Visitors")
+    #图的标题
+    plt.title("Visitor Data Visualization")
+    plt.show()
+    plt.pause(1)
+    plt.close()
+
+if __name__ == '__main__':
+    while 1:
+        update_msg()
+        plot_show_msg('./Read_msg/read_msg.csv')
+        time.sleep(2)
