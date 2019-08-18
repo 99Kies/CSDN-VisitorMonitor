@@ -9,9 +9,9 @@
     *  将所有的访客数据爬取下来并统计
 * 可视化接口
 	*  以日期作为x轴
-	*  ![day](Y_m_d.png)
+	  <div align=center>![day](Y_m_d.png)</div>
 	*  以时间作为x轴
-	*  ![time](H_M_S.png)
+	  <div align=center>![time](H_M_S.png)</div>
 	
 ## 有问题反馈
 在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
