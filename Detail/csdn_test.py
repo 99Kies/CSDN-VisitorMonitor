@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 import requests
 from pyquery import PyQuery as pq
 import matplotlib.pyplot as plt
@@ -6,6 +8,9 @@ from numpy import *
 import csv
 import os
 import operator
+plt.rcParams['font.family'] = ['sans-serif']
+plt.rcParams['font.sans-serif'] = ['SimHei']
+
 
 def get_read_number(page):
     '''
@@ -41,7 +46,7 @@ def get_read_number(page):
                 title_msg[project['title']] = project['read']
                 all_read += int(project['read'])
                 count += 1
-    return str(all_read), time.strftime("%Y/%m/%d",time.localtime(time.time())),title_msg
+    return str(all_read), time.strftime("%H:%M:%S",time.localtime(time.time())),title_msg
 
 def detail_msg_save(title_msg):
     '''
@@ -91,10 +96,9 @@ def is_yesterday_yn():
     :return: True/False True：需要爬虫。False：无需爬虫
     '''
     msg_path = 'Read_msg'
-    today = time.strftime("%Y/%m/%d",time.localtime(time.time()))
+    today = time.strftime("%H:%M:%S",time.localtime(time.time()))
     filename = msg_path + os.path.sep + 'read_msg.csv'
     if not os.path.exists(msg_path):
-        print('1')
         return True
     with open(filename,'r',encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
@@ -154,8 +158,9 @@ def get_last_change_msg(change_now):
                 change_ago[row[0]] = row[1]
     for title in change_ago:
         change_all[title] = int(change_ago[title]) + int(change_now[title])
-    sorted_dict = sorted(change_all.items(), key=operator.itemgetter(1), reverse=True)
-    print('总变化：',sorted_dict[:5])
+    sorted_dict = sorted(change_all.items(), key=operator.itemgetter(1), reverse=True)[:5]
+    print('总变化：',sorted_dict)
+    plot_by_pie(sorted_dict)
     save_dict_msg(file_compare_all,change_all)
 
 def save_dict_msg(filename,msgs):
@@ -213,6 +218,30 @@ def plot_show_msg(filename):
     plt.show()
     plt.pause(1)
     plt.close()
+
+def plot_by_pie(sorted_msg):
+    '''
+    画张饼图
+    :param sorted_msg: 每篇文章的总变化或者日变化的前五位,
+    :return:
+    '''
+    title = []
+    read = []
+    for msg in sorted_msg:
+        if msg[1] != 0:
+            # 不统计是 0 的数据
+            title.append(msg[0])
+            read.append(msg[1])
+    try:
+        if title:
+            plt.close()
+            plt.pie(read,labels=title)
+            plt.title("Visitor Data Visualization")
+            plt.show()
+            plt.pause(1)
+            plt.close()
+    except:
+        print('pie_plot Error!!!')
 
 if __name__ == '__main__':
     while 1:
