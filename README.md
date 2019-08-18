@@ -1,4 +1,4 @@
-<div align=center>![CSDN-Visitor_Monitor](zhexian.png)</div>
+<div align=center><img src="https://github.com/99Kies/Visitor_Monitor/blob/master/zhexian.png" width="35%" height="35%" /></div>
 
 ## CSDN-Visitor_Monitor是什么?
 一个csdn访客量监视器
