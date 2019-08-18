@@ -1,10 +1,6 @@
 <div align=center><img src="https://github.com/99Kies/Visitor_Monitor/blob/master/zhexian.png" width="35%" height="35%" /></div>
 
-<div algin=center>
-
 ## CSDN-Visitor_Monitor是什么?
-
-</div>
 一个csdn访客量监视器
 
 ## CSDN-Visitor_Monitor有哪些功能？
