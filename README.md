@@ -1,8 +1,5 @@
-<center>
-<img src="https://github.com/99Kies/Visitor_Monitor/blob/master/zhexian.png?raw=true" width="25%" height="25%" />
-Figure 1. Lena
-</center>
-![CSDN-Visitor_Monitor](zhexian.png)
+<div align=center>![CSDN-Visitor_Monitor](zhexian.png)</div>
+
 ## CSDN-Visitor_Monitor是什么?
 一个csdn访客量监视器
 
