@@ -1,6 +1,5 @@
 import requests
 from pyquery import PyQuery as pq
-import re
 import matplotlib.pyplot as plt
 import time
 from numpy import *
@@ -9,9 +8,17 @@ import os
 import operator
 
 def get_read_number(page):
+    '''
+    爬虫模块，爬取博客主页所有的文章信息
+    :param page: 博客共有几页
+    :return: 总浏览量，时间，文章标题
+    '''
     all_read = 0
+    # 记录总浏览量
     count = 0
+    # 记录匹配到几篇文章
     title_msg = {}
+    # 用于记录文章的标题和他对应的浏览量
     for i in range(1,page+1):
         url = 'https://blog.csdn.net/qq_19381989/article/list/{}'.format(i)
         # print(url)
@@ -34,40 +41,34 @@ def get_read_number(page):
                 title_msg[project['title']] = project['read']
                 all_read += int(project['read'])
                 count += 1
-    return str(all_read), time.strftime("%H:%M:%S",time.localtime(time.time())),title_msg
+    return str(all_read), time.strftime("%Y/%m/%d",time.localtime(time.time())),title_msg
 
 def detail_msg_save(title_msg):
+    '''
+    这里主要存储每篇文章的信息
+    :param title_msg: 匹配到的字典数据
+    :return:
+    '''
     msg_path = './Read_msg'
-    filename = msg_path + os.path.sep +'detail_msg.csv'
-    with open(filename,'w', encoding='utf-8') as csvfile:
-        writer = csv.writer(csvfile, dialect='unix')
-        for title in title_msg:
-            writer.writerow((title,title_msg[title]))
-
-def is_yesterday_yn():
-    '''
-    每次保存时都打开存储访客数据的文件判断一下最后一次保存的是否为昨天，若是则进行爬取
-    若没有访客数据的文件时也要进行爬虫
-    :param filename: 访客数据文件名
-    :return: True/False True：需要爬虫。False：无需爬虫
-    '''
-    msg_path = 'Test_msg'
-    today = time.strftime("%H:%M:%S",time.localtime(time.time()))
-    filename = msg_path + os.path.sep + 'test_msg.csv'
-    if not os.path.exists(msg_path):
-        return True
-    with open(filename,'r',encoding='utf-8') as csvfile:
-        reader = str(csvfile.readlines())
-        print(reader)
-    if today in reader:
-        print('is Today')
-        return False
-    else:
-        print('isn\'t today, you need update!')
-        return True
-
+    try:
+        if not os.path.exists(msg_path):
+            os.mkdir(msg_path)
+        filename = msg_path + os.path.sep +'detail_msg.csv'
+        with open(filename,'w', encoding='utf-8') as csvfile:
+        # 以覆盖的形式写入,
+            writer = csv.writer(csvfile, dialect='unix')
+            for title in title_msg:
+                writer.writerow((title,title_msg[title]))
+    except:
+        print('detail_msg_save Error!!!')
 
 def write_to_file(all_read, date):
+    '''
+    存储总访客量和时间数据
+    :param all_read: 总浏览量
+    :param date: 时间
+    :return:
+    '''
     msg_path = 'Read_msg'
     filename = msg_path + os.path.sep +'read_msg.csv'
     if not os.path.exists(msg_path):
@@ -81,6 +82,30 @@ def write_to_file(all_read, date):
             writer.writerow((all_read,date))
     except Exception as e:
         print(e)
+
+def is_yesterday_yn():
+    '''
+    每次保存时都打开存储访客数据的文件判断一下最后一次保存的是否为昨天，若是则进行爬取
+    若没有访客数据的文件时也要进行爬虫
+    :param filename: 访客数据文件名
+    :return: True/False True：需要爬虫。False：无需爬虫
+    '''
+    msg_path = 'Read_msg'
+    today = time.strftime("%Y/%m/%d",time.localtime(time.time()))
+    filename = msg_path + os.path.sep + 'read_msg.csv'
+    if not os.path.exists(msg_path):
+        print('1')
+        return True
+    with open(filename,'r',encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if today in row:
+                print('is Today')
+                return False
+
+    print('isn\'t today, you need update!')
+    return True
+
 
 def compare_detail_msg(title_msg):
     '''
@@ -135,7 +160,7 @@ def get_last_change_msg(change_now):
 
 def save_dict_msg(filename,msgs):
     '''
-    用于保存字典数据
+    用于其他函数保存字典数据
     :param filename: 文件名
     :param msgs: 字典数据
     :return:
@@ -184,7 +209,6 @@ def plot_show_msg(filename):
     plt.subplots_adjust(bottom=0.15)
     plt.xlabel("Date")
     plt.ylabel("Visitors")
-    #图的标题
     plt.title("Visitor Data Visualization")
     plt.show()
     plt.pause(1)
@@ -194,4 +218,4 @@ if __name__ == '__main__':
     while 1:
         update_msg()
         plot_show_msg('./Read_msg/read_msg.csv')
-        time.sleep(2)
+        time.sleep(5)
