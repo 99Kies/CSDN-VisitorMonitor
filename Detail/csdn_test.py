@@ -206,18 +206,25 @@ def plot_show_msg(filename):
         print('Read Error')
     ax = array(xtime)
     ay = array(yread)
-    # plt.ion()
-    plt.close()
-    plt.plot(ax,ay)
-    plt.xticks(rotation=70)
-    plt.margins(0.08)
-    plt.subplots_adjust(bottom=0.15)
-    plt.xlabel("Date")
-    plt.ylabel("Visitors")
-    plt.title("Visitor Data Visualization")
-    plt.show()
-    plt.pause(1)
-    plt.close()
+    if xtime:
+        plot_path = 'Images' + os.path.sep + 'plot'
+        print(plot_path)
+        if not os.path.exists(plot_path):
+            os.makedirs(plot_path)
+        filename = plot_path + os.path.sep + time.strftime("%H_%M_%S_plot",time.localtime()) + '.png'
+        print(filename)
+        plt.close()
+        plt.plot(ax,ay)
+        plt.xticks(rotation=70)
+        plt.margins(0.08)
+        plt.subplots_adjust(bottom=0.15)
+        plt.xlabel("Date")
+        plt.ylabel("Visitors")
+        plt.title("Visitor Data Visualization")
+        plt.savefig(filename)
+        plt.show()
+        plt.pause(1)
+        plt.close()
 
 def plot_by_pie(sorted_msg):
     '''
@@ -232,16 +239,23 @@ def plot_by_pie(sorted_msg):
             # 不统计是 0 的数据
             title.append(msg[0])
             read.append(msg[1])
-    try:
-        if title:
-            plt.close()
-            plt.pie(read,labels=title)
-            plt.title("Visitor Data Visualization")
-            plt.show()
-            plt.pause(1)
-            plt.close()
-    except:
-        print('pie_plot Error!!!')
+    # try:
+    if title:
+        pie_path = 'Images' + os.path.sep + 'pie_'
+        print(pie_path)
+        if not os.path.exists(pie_path):
+            os.makedirs(pie_path)
+        filename = pie_path + os.path.sep + time.strftime("%H_%M_%S_pie", time.localtime()) + '.png'
+        print(filename)
+        plt.close()
+        plt.pie(read,labels=title)
+        plt.title("Visitor Data Visualization")
+        plt.savefig(filename)
+        plt.show()
+        plt.pause(1)
+        plt.close()
+    # except:
+    #     print('pie_plot Error!!!')
 
 if __name__ == '__main__':
     while 1:
