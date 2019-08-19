@@ -98,7 +98,7 @@ def is_yesterday_yn():
     msg_path = 'Read_msg'
     today = time.strftime("%H:%M:%S",time.localtime(time.time()))
     filename = msg_path + os.path.sep + 'read_msg.csv'
-    if not os.path.exists(msg_path):
+    if not os.path.exists(filename):
         return True
     with open(filename,'r',encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
@@ -192,14 +192,13 @@ def update_msg():
         write_to_file(all_read, date)
 
 
-
 def plot_show_msg(filename):
     try:
         xtime = []
         yread = []
         with open(filename,'r',encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)
-            for row in list(reader)[1:]:
+            for row in list(reader):
                 xtime.append(row[1])
                 yread.append(row[0])
     except:
@@ -208,11 +207,9 @@ def plot_show_msg(filename):
     ay = array(yread)
     if xtime:
         plot_path = 'Images' + os.path.sep + 'plot'
-        print(plot_path)
         if not os.path.exists(plot_path):
             os.makedirs(plot_path)
         filename = plot_path + os.path.sep + time.strftime("%H_%M_%S_plot",time.localtime()) + '.png'
-        print(filename)
         plt.close()
         plt.plot(ax,ay)
         plt.xticks(rotation=70)
@@ -239,23 +236,21 @@ def plot_by_pie(sorted_msg):
             # 不统计是 0 的数据
             title.append(msg[0])
             read.append(msg[1])
-    # try:
-    if title:
-        pie_path = 'Images' + os.path.sep + 'pie_'
-        print(pie_path)
-        if not os.path.exists(pie_path):
-            os.makedirs(pie_path)
-        filename = pie_path + os.path.sep + time.strftime("%H_%M_%S_pie", time.localtime()) + '.png'
-        print(filename)
-        plt.close()
-        plt.pie(read,labels=title)
-        plt.title("Visitor Data Visualization")
-        plt.savefig(filename)
-        plt.show()
-        plt.pause(1)
-        plt.close()
-    # except:
-    #     print('pie_plot Error!!!')
+    try:
+        if title:
+            pie_path = 'Images' + os.path.sep + 'pie_'
+            if not os.path.exists(pie_path):
+                os.makedirs(pie_path)
+            filename = pie_path + os.path.sep + time.strftime("%H_%M_%S_pie", time.localtime()) + '.png'
+            plt.close()
+            plt.pie(read,labels=title)
+            plt.title("Visitor Data Visualization")
+            plt.savefig(filename)
+            plt.show()
+            plt.pause(1)
+            plt.close()
+    except:
+        print('pie_plot Error!!!')
 
 if __name__ == '__main__':
     while 1:
