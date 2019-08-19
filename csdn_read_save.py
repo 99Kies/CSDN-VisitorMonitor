@@ -210,12 +210,12 @@ def plot_show_msg(filename):
     print(yread)
     ax = array(xtime)
     ay = array(yread)
-    if xtime:
+    if len(xtime) > 1:
+        # 若只有一条数据或者没有的时候，就不打印图片
         plot_path = 'Images' + os.path.sep + 'plot'
         if not os.path.exists(plot_path):
             os.makedirs(plot_path)
         filename = plot_path + os.path.sep + time.strftime("%Y_%m_%d_plot",time.localtime()) + '.png'
-        plt.close()
         plt.plot(ax,ay)
         plt.xticks(rotation=70)
         plt.margins(0.08)
@@ -224,9 +224,6 @@ def plot_show_msg(filename):
         plt.ylabel("Visitors")
         plt.title("Visitor Data Visualization")
         plt.savefig(filename)
-        plt.show()
-        plt.pause(1)
-        plt.close()
 
 def plot_by_pie(sorted_msg):
     '''
@@ -242,18 +239,14 @@ def plot_by_pie(sorted_msg):
             title.append(msg[0])
             read.append(msg[1])
     try:
-        if title:
+        if len(title) > 1:
             pie_path = 'Images' + os.path.sep + 'pie_'
             if not os.path.exists(pie_path):
                 os.makedirs(pie_path)
             filename = pie_path + os.path.sep + time.strftime("%Y_%m_%d_pie", time.localtime()) + '.png'
-            plt.close()
             plt.pie(read,labels=title)
             plt.title("Visitor Data Visualization")
             plt.savefig(filename)
-            plt.show()
-            plt.pause(1)
-            plt.close()
     except:
         print('pie_plot Error!!!')
 
