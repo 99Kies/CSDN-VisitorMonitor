@@ -205,7 +205,7 @@ def plot_show_msg(filename):
         print('Read Error')
     ax = array(xtime)
     ay = array(yread)
-    if xtime:
+    if len(xtime) > 1:
         plot_path = 'Images' + os.path.sep + 'plot'
         if not os.path.exists(plot_path):
             os.makedirs(plot_path)
@@ -237,7 +237,7 @@ def plot_by_pie(sorted_msg):
             title.append(msg[0])
             read.append(msg[1])
     try:
-        if title:
+        if len(title) > 1:
             pie_path = 'Images' + os.path.sep + 'pie_'
             if not os.path.exists(pie_path):
                 os.makedirs(pie_path)
