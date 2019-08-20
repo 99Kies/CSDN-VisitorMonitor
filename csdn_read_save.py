@@ -126,7 +126,11 @@ def compare_detail_msg(title_msg):
         for row in list(res):
             old_msg[row[0]] = row[1]
     for title in title_msg:
-        change_[title] = int(title_msg[title]) - int(old_msg[title])
+        # 判断是否有新文章
+        if title not in old_msg:
+            change_[title] = int(title_msg[title])
+        else:
+            change_[title] = int(title_msg[title]) - int(old_msg[title])
     sorted_dict = sorted(change_.items(), key=operator.itemgetter(1), reverse=True)
     #对变化过的数据按照访客量进行排序，输出更新变化最大的五篇文章
     print('日变化：',sorted_dict[:5])
@@ -204,8 +208,6 @@ def plot_show_msg(filename):
                 yread.append(row[0])
     except:
         print('Read Error')
-    # print(reader)
-    # for row in reader
     print(xtime)
     print(yread)
     ax = array(xtime)
