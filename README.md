@@ -1,4 +1,4 @@
-<div align=center><img src="https://github.com/99Kies/Visitor_Monitor/blob/master/zhexian.png" width="35%" height="35%" /></div>
+<div align=center><img src="https://github.com/99Kies/Visitor_Monitor/blob/master/Article_Images/zhexian.png" width="35%" height="35%" /></div>
 
 ## CSDN-Visitor_Monitor是什么?
 一个csdn访客量监视器
@@ -8,11 +8,11 @@
     *  将所有的访客数据爬取下来并统计
 * 可视化接口
 	*  以日期作为x轴
-	*  ![day](Y_m_d.png)
+	*  ![day](Article_Images/Y_m_d.png)
 	*  以时间作为x轴
-	*  ![time](H_M_S.png)
+	*  ![time](Article_Images/H_M_S.png)
 	*  各篇文章访客圆饼图(日变化，总变化)
-	*  ![pie](
+	*  ![pie](Article_Images/pie.png)
 	
 ## 有问题反馈
 在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
