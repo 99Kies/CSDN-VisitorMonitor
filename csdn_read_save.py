@@ -161,7 +161,10 @@ def get_last_change_msg(change_now):
             for row in reader:
                 change_ago[row[0]] = row[1]
     for title in change_ago:
-        change_all[title] = int(change_ago[title]) + int(change_now[title])
+        if title not in change_now.keys():
+            change_all[title] = int(change_ago[title])
+        else:
+            change_all[title] = int(change_ago[title]) + int(change_now[title])
     sorted_dict = sorted(change_all.items(), key=operator.itemgetter(1), reverse=True)[:5]
     print('总变化：',sorted_dict)
     plot_by_pie(sorted_dict)
@@ -218,6 +221,7 @@ def plot_show_msg(filename):
         if not os.path.exists(plot_path):
             os.makedirs(plot_path)
         filename = plot_path + os.path.sep + time.strftime("%Y_%m_%d_plot",time.localtime()) + '.png'
+        plt.close()
         plt.plot(ax,ay)
         plt.xticks(rotation=70)
         plt.margins(0.08)
@@ -246,6 +250,7 @@ def plot_by_pie(sorted_msg):
             if not os.path.exists(pie_path):
                 os.makedirs(pie_path)
             filename = pie_path + os.path.sep + time.strftime("%Y_%m_%d_pie", time.localtime()) + '.png'
+            plt.close()
             plt.pie(read,labels=title)
             plt.title("Visitor Data Visualization")
             plt.savefig(filename)
