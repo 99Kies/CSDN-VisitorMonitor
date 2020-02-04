@@ -16,10 +16,10 @@ def Every_day_Update(dirfile):
             g = repo.git
             try:
                 for_Update()
-                
+                 
                 g.add("--all")
                 g.commit("-m auto update")
-                repo.remote().push()
+                g.push()
             except:
             	print('Every, try again ing...')
             	Every_day_Update(dirfile)
