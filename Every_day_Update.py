@@ -21,8 +21,9 @@ def Every_day_Update(dirfile):
                 g.commit("-m auto update")
                 g.push()
             except:
-            	print('Every, try again ing...')
-            	Every_day_Update(dirfile)
+                print('Every, try again ing...')
+                time.sleep(4)
+                Every_day_Update(dirfile)
             now = time.strftime('%d',time.localtime(time.time()))
         else:
             print('is update!')
