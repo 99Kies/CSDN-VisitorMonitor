@@ -8,12 +8,11 @@ def Every_day_Update(dirfile):
     cnt = 0
     first_now = time.strftime('%d',time.localtime(time.time()))
     now = 100 
+    repo = Repo(dirfile)
+    g = repo.git
 
     while 1:
         if first_now != now:
-            cnt += 1
-            repo = Repo(dirfile)
-            g = repo.git
             try:
                 for_Update()
                  
