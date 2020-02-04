@@ -257,6 +257,10 @@ def plot_by_pie(sorted_msg):
     except:
         print('pie_plot Error!!!')
 
+def for_Update():
+    update_msg()
+    plot_show_msg('./Read_msg/read_msg.csv')
+
 if __name__ == '__main__':
     update_msg()
     plot_show_msg('./Read_msg/read_msg.csv')
