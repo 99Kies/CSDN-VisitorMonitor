@@ -13,6 +13,15 @@
 	*  ![time](Article_Images/H_M_S.png)
 	*  各篇文章访客圆饼图(日变化，总变化)
 	*  ![pie](Article_Images/pie.png)
+
+## 安装依赖
+
+环境: 
+Windows/Linux
+Python >= 3.5
+
+> pip install -r requirements.txt
+> sudo apt-get install python3-matplotlib
 	
 ## 有问题反馈
 在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
