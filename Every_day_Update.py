@@ -27,10 +27,10 @@ def Every_day_Update(dirfile):
         else:
             print('is update!')
             try:
-                print("something change")
                 g.add('--all')
                 g.commit('-m auto update')
                 g.push()
+                print("something change")
             except:
                 print("clean")
         time.sleep(5)
