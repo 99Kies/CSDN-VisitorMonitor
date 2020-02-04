@@ -27,6 +27,9 @@ def Every_day_Update(dirfile):
             now = time.strftime('%d',time.localtime(time.time()))
         else:
             print('is update!')
+            g.add('--all')
+            g.commit('-m auto update')
+            g.push()
         time.sleep(5)
 
 if __name__ == '__main__':
