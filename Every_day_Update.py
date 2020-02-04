@@ -19,7 +19,7 @@ def Every_day_Update(dirfile):
                 
                 g.add("--all")
                 g.commit("-m auto update")
-                g.push()
+                repo.remote().push()
             except:
             	print('Every, try again ing...')
             	Every_day_Update(dirfile)
