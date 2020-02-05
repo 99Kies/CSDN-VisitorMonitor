@@ -2,6 +2,8 @@
 
 import requests
 from pyquery import PyQuery as pq
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import time
 from numpy import *
@@ -46,7 +48,7 @@ def get_read_number(page):
                 title_msg[project['title']] = project['read']
                 all_read += int(project['read'])
                 count += 1
-    return str(all_read), time.strftime("%Y/%m/%d",time.localtime(time.time())),title_msg
+    return str(all_read), time.strftime("%Y %m %d",time.localtime(time.time())),title_msg
 
 def detail_msg_save(title_msg):
     '''
@@ -59,7 +61,7 @@ def detail_msg_save(title_msg):
         if not os.path.exists(msg_path):
             os.mkdir(msg_path)
         filename = msg_path + os.path.sep +'detail_msg.csv'
-        with open(filename,'w', encoding='utf-8') as csvfile:
+        with open(filename,'w', encoding='utf-8', errors='ignore') as csvfile:
         # 以覆盖的形式写入,
             writer = csv.writer(csvfile, dialect='unix')
             for title in title_msg:
@@ -78,11 +80,11 @@ def write_to_file(all_read, date):
     filename = msg_path + os.path.sep +'read_msg.csv'
     if not os.path.exists(msg_path):
         os.mkdir(msg_path)
-        with open(filename, 'a', encoding='utf-8') as csvfile:
+        with open(filename, 'a', encoding='utf-8', errors="ignore") as csvfile:
             writer = csv.writer(csvfile, dialect='unix')
             writer.writerow(['read','date'])
     try:
-        with open(filename,'a',encoding='utf-8') as csvfile:
+        with open(filename,'a',encoding='utf-8', errors="ignore") as csvfile:
             writer = csv.writer(csvfile, dialect='unix')
             writer.writerow((all_read,date))
     except Exception as e:
@@ -96,11 +98,11 @@ def is_yesterday_yn():
     :return: True/False True：需要爬虫。False：无需爬虫
     '''
     msg_path = 'Read_msg'
-    today = time.strftime("%Y/%m/%d",time.localtime(time.time()))
+    today = time.strftime("%Y %m %d",time.localtime(time.time()))
     filename = msg_path + os.path.sep + 'read_msg.csv'
     if not os.path.exists(filename):
         return True
-    with open(filename,'r',encoding='utf-8') as csvfile:
+    with open(filename,'r',encoding='utf-8', errors="ignore") as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             if today in row:
@@ -121,7 +123,7 @@ def compare_detail_msg(title_msg):
     msg_path = './Read_msg'
     filename = msg_path + os.path.sep + 'detail_msg.csv'
     file_compare_day = msg_path + os.path.sep + 'compare_day_msg.csv'
-    with open(filename, 'r',encoding='utf-8') as csvfile:
+    with open(filename, 'r',encoding='utf-8', errors="ignore") as csvfile:
         res = csv.reader(csvfile)
         for row in list(res):
             old_msg[row[0]] = row[1]
@@ -151,12 +153,12 @@ def get_last_change_msg(change_now):
     change_all = {}
     if not os.path.exists(file_compare_all):
         #第一次运行的时候，用于判断是否有compare_all_msg.csv文件，第一次的change_ago取compare_day_msg.csv种的日变化，就是初始化咯
-        with open(ago_filename,'r',encoding='gb18030') as csvfile:
+        with open(ago_filename,'r',encoding='gb18030', errors="ignore") as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
                 change_ago[row[0]] = row[1]
     else:
-        with open(file_compare_all,'r',encoding='gb18030') as csvfile:
+        with open(file_compare_all,'r',encoding='gb18030', errors="ignore") as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
                 change_ago[row[0]] = row[1]
@@ -204,7 +206,7 @@ def plot_show_msg(filename):
     try:
         xtime = []
         yread = []
-        with open(filename,'r',encoding='utf-8') as csvfile:
+        with open(filename,'r',encoding='utf-8', errors="ignore") as csvfile:
             reader = csv.reader(csvfile)
             for row in list(reader):
                 xtime.append(row[1])
