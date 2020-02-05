@@ -34,7 +34,7 @@ def Every_day_Update(dirfile):
 #            except:
 #                print("clean")
         now = int(time.strftime("%d", time.localtime(time.time())))
-        time.sleep(5)
+        time.sleep(500)
 
 if __name__ == '__main__':
     dirfile = os.path.abspath('')
