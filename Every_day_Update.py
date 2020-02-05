@@ -6,7 +6,7 @@ import time
 
 def Every_day_Update(dirfile):
     cnt = 0
-    first_now = time.strftime('%d',time.localtime(time.time()))
+    first_now = int(time.strftime('%d',time.localtime(time.time())))
     now = 100 
     repo = Repo(dirfile)
     g = repo.git
@@ -14,16 +14,16 @@ def Every_day_Update(dirfile):
     while 1:
         if first_now != now:
             try:
-                for_Update()
-                 
+                print("%d auto push" % first_now)
+                for_Update()    
                 g.add("--all")
                 g.commit("-m auto update")
                 g.push()
+                now = int(time.strftime('%d', time.localtime(time.time())))
+                first_now = now
             except:
-                print('Every, try again ing...')
-                time.sleep(4)
+                time.sleep(5)
                 Every_day_Update(dirfile)
-            now = time.strftime('%d',time.localtime(time.time()))
         else:
             print('is update!')
 #            try:
@@ -33,6 +33,7 @@ def Every_day_Update(dirfile):
 #                print("something change")
 #            except:
 #                print("clean")
+        now = int(time.strftime("%d", time.localtime(time.time())))
         time.sleep(5)
 
 if __name__ == '__main__':
