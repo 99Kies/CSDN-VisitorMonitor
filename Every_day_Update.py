@@ -20,7 +20,7 @@ def Every_day_Update(dirfile):
                     g.add("--all")
                     g.commit("-m auto update")
                     g.push()
-                    print("%d push done" % first_now)
+                    print("%d already push!" % first_now)
                 except:
                     pass
                 now = int(time.strftime('%d', time.localtime(time.time())))
