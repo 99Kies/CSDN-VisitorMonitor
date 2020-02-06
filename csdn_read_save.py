@@ -222,8 +222,6 @@ def plot_show_msg(filename):
                 yread.append(int(row[0]))
     except:
         print('Read Error')
-    print(xtime)
-    print(yread)
     ax = xtime
     ay = yread
     if len(xtime) > 1:
