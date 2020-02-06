@@ -1,4 +1,4 @@
-# encoding: utf-8
+# -*- coding:utf-8 -*-
 
 import requests
 from pyquery import PyQuery as pq
@@ -8,8 +8,17 @@ import matplotlib.pyplot as plt
 import time
 from numpy import *
 import csv
-import os
 import operator
+import sys
+import importlib
+importlib.reload(sys)
+import os
+from datetime import datetime
+
+os.environ['NLS_LANG'] = 'Simplified Chinese_CHINA.ZHS16GBK'
+
+#import cx_Oracle as cx
+
 plt.rcParams['font.family'] = ['sans-serif']
 plt.rcParams['font.sans-serif'] = ['SimHei']
 
@@ -48,7 +57,7 @@ def get_read_number(page):
                 title_msg[project['title']] = project['read']
                 all_read += int(project['read'])
                 count += 1
-    return str(all_read), time.strftime("%Y %m %d",time.localtime(time.time())),title_msg
+    return str(all_read), time.strftime("%Y/%m/%d",time.localtime(time.time())),title_msg
 
 def detail_msg_save(title_msg):
     '''
@@ -98,7 +107,7 @@ def is_yesterday_yn():
     :return: True/False True：需要爬虫。False：无需爬虫
     '''
     msg_path = 'Read_msg'
-    today = time.strftime("%Y %m %d",time.localtime(time.time()))
+    today = time.strftime("%Y/%m/%d",time.localtime(time.time()))
     filename = msg_path + os.path.sep + 'read_msg.csv'
     if not os.path.exists(filename):
         return True
@@ -109,7 +118,7 @@ def is_yesterday_yn():
                 print('is Today')
                 return False
 
-    print('isn\'t today, you need update!')
+    print("isn\'t today, you need update!")
     return True
 
 
@@ -135,7 +144,7 @@ def compare_detail_msg(title_msg):
             change_[title] = int(title_msg[title]) - int(old_msg[title])
     sorted_dict = sorted(change_.items(), key=operator.itemgetter(1), reverse=True)
     #对变化过的数据按照访客量进行排序，输出更新变化最大的五篇文章
-    print('日变化：',sorted_dict[:5])
+#    print("Day Change:"sorted_dict[:5])
     save_dict_msg(file_compare_day,change_)
     get_last_change_msg(change_)
     #记录文章浏览量总变化
@@ -168,7 +177,7 @@ def get_last_change_msg(change_now):
         else:
             change_all[title] = int(change_ago[title]) + int(change_now[title])
     sorted_dict = sorted(change_all.items(), key=operator.itemgetter(1), reverse=True)[:5]
-    print('总变化：',sorted_dict)
+#    print('All Change:',sorted_dict)
     plot_by_pie(sorted_dict)
     save_dict_msg(file_compare_all,change_all)
 
@@ -209,30 +218,34 @@ def plot_show_msg(filename):
         with open(filename,'r',encoding='utf-8', errors="ignore") as csvfile:
             reader = csv.reader(csvfile)
             for row in list(reader):
-                xtime.append(row[1])
-                yread.append(row[0])
+                xtime.append(datetime.strptime(row[1], "%Y/%m/%d"))
+                yread.append(int(row[0]))
     except:
         print('Read Error')
     print(xtime)
     print(yread)
-    ax = array(xtime)
-    ay = array(yread)
+    ax = xtime
+    ay = yread
     if len(xtime) > 1:
         # 若只有一条数据或者没有的时候，就不打印图片
         plot_path = 'Images' + os.path.sep + 'plot'
         if not os.path.exists(plot_path):
             os.makedirs(plot_path)
         filename = plot_path + os.path.sep + time.strftime("%Y_%m_%d_plot",time.localtime()) + '.png'
-        plt.close()
-        plt.plot(ax,ay)
-        plt.xticks(rotation=70)
-        plt.margins(0.08)
-        plt.subplots_adjust(bottom=0.15)
-        plt.xlabel("Date")
-        plt.ylabel("Visitors")
-        plt.title("Visitor Data Visualization")
-        plt.savefig(filename)
-
+        try:
+            plt.close()
+            #fig = plt.figure(dpi=128, figsize=(10,6))
+            plt.plot(ax,ay, c='red')
+            plt.xticks(rotation=70)
+            plt.margins(0.08)
+            plt.subplots_adjust(bottom=0.15)
+            plt.xlabel("Date")
+            #fig.autofmt_xdate()
+            plt.ylabel("Visitors")
+            plt.title("Visitor Data Visualization, 2020")
+            plt.savefig(filename)
+        except:
+            pass
 def plot_by_pie(sorted_msg):
     '''
     画张饼图
@@ -245,7 +258,7 @@ def plot_by_pie(sorted_msg):
         if msg[1] != 0:
             # 不统计是 0 的数据
             title.append(msg[0])
-            read.append(msg[1])
+            read.append(int(msg[1]))
     try:
         if len(title) > 1:
             pie_path = 'Images' + os.path.sep + 'pie_'
