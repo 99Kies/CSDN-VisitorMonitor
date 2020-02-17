@@ -178,6 +178,7 @@ def get_last_change_msg(change_now):
             change_all[title] = int(change_ago[title]) + int(change_now[title])
     sorted_dict = sorted(change_all.items(), key=operator.itemgetter(1), reverse=True)[:5]
 #    print('All Change:',sorted_dict)
+    print(sorted_dict)
     plot_by_pie(sorted_dict)
     save_dict_msg(file_compare_all,change_all)
 
@@ -257,18 +258,18 @@ def plot_by_pie(sorted_msg):
             # 不统计是 0 的数据
             title.append(msg[0])
             read.append(int(msg[1]))
-    try:
-        if len(title) > 1:
-            pie_path = 'Images' + os.path.sep + 'pie_'
-            if not os.path.exists(pie_path):
-                os.makedirs(pie_path)
-            filename = pie_path + os.path.sep + time.strftime("%Y_%m_%d_pie", time.localtime()) + '.png'
+    if len(title) > 1:
+        pie_path = 'Images' + os.path.sep + 'pie_'
+        if not os.path.exists(pie_path):
+            os.makedirs(pie_path)
+        filename = pie_path + os.path.sep + time.strftime("%Y_%m_%d_pie", time.localtime()) + '.png'
+        try:
             plt.close()
             plt.pie(read,labels=title)
             plt.title("Visitor Data Visualization")
             plt.savefig(filename)
-    except:
-        print('pie_plot Error!!!')
+        except:
+            print('pie_plot Error!!!')
 
 def for_Update():
     update_msg()
