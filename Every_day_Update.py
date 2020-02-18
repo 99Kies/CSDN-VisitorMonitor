@@ -1,6 +1,6 @@
 import os
 from git import Repo
-from csdn_read_save import for_Update
+from csdn_read_save import for_Update, Logs
 import time
 
 
@@ -21,8 +21,9 @@ def Every_day_Update(dirfile):
                     g.commit("-m auto update")
                     g.push()
                     print("%d already push!" % first_now)
-                except:
-                    pass
+                except Exception as e:
+                    print(e)
+                    Logs(time.strftime("%Y-%m-%d,%H:%M", time.localtime()),"Every_day_Update(dirfile)", e)
                 now = int(time.strftime('%d', time.localtime(time.time())))
                 first_now = now
             except:
