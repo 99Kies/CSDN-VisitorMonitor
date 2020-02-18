@@ -196,6 +196,8 @@ def save_dict_msg(filename,msgs):
                 writer.writerow((key, msgs[key]))
     except:
         print('save_dict Error!!!',filename)
+        Logs(time.strftime("%Y-%m-%d,%H:%M", time.localtime()),"save_dict_msg(filename,msgs): (ps: %s)"%(filename), e)
+
 
 def update_msg():
     Detail_path = './Read_msg/read_msg.csv'
@@ -221,8 +223,9 @@ def plot_show_msg(filename):
             for row in list(reader):
                 xtime.append(datetime.strptime(row[1], "%Y/%m/%d"))
                 yread.append(int(row[0]))
-    except:
+    except Exception as e:
         print('Read Error')
+        Logs(time.strftime("%Y-%m-%d,%H:%M", time.localtime()),"plot_show_msg(filename):", e)
     ax = xtime
     ay = yread
     if len(xtime) > 1:
@@ -243,8 +246,9 @@ def plot_show_msg(filename):
             plt.ylabel("Visitors")
             plt.title("Visitor Data Visualization, 2020")
             plt.savefig(filename)
-        except:
-            pass
+        except Exception as e:
+            print("plot_show_msg   plt error!")
+            Logs(time.strftime("%Y-%m-%d,%H:%M", time.localtime()),"plot_show_msg(filename):", e)
 def plot_by_pie(sorted_msg):
     '''
     画张饼图
@@ -268,8 +272,18 @@ def plot_by_pie(sorted_msg):
             plt.pie(read,labels=title)
             plt.title("Visitor Data Visualization")
             plt.savefig(filename)
-        except:
+        except Exception as e:
             print('pie_plot Error!!!')
+            Logs(time.strftime("%Y-%m-%d,%H:%M", time.localtime()), "plot_by_pie(sorted_msg):", e)
+            
+
+def Logs(datetime, FuncName, e):
+    filename = "csdn.log"
+    with open(filename, 'a') as file:
+        log_msg = datetime + "  ==  " + FuncName + "  ==  " + str(e) + "\n"
+        file.write(log_msg)
+
+
 
 def for_Update():
     update_msg()
