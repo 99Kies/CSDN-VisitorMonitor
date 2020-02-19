@@ -132,7 +132,7 @@ def compare_detail_msg(title_msg):
     msg_path = './Read_msg'
     filename = msg_path + os.path.sep + 'detail_msg.csv'
     file_compare_day = msg_path + os.path.sep + 'compare_day_msg.csv'
-    with open(filename, 'r',encoding='utf-8', errors="ignore") as csvfile:
+    with open(filename, 'r',encoding='gb18030', errors="ignore") as csvfile:
         res = csv.reader(csvfile)
         for row in list(res):
             old_msg[row[0]] = row[1]

@@ -1,3 +1,34 @@
 2020-02-18,20:03  test  division by zero
 2020-02-18,20:04  test  name 's' is not defined
 2020-02-19,00:12  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
+2020-02-19,00:12  ==  Every_day_Update(dirfile)  ==  Cmd('git') failed due to: exit code(1)
+  cmdline: git push
+  stderr: 'warning: push.default is unset; its implicit value has changed in
+Git 2.0 from 'matching' to 'simple'. To squelch this message
+and maintain the traditional behavior, use:
+
+  git config --global push.default matching
+
+To squelch this message and adopt the new behavior now, use:
+
+  git config --global push.default simple
+
+When push.default is set to 'matching', git will push local branches
+to the remote branches that already exist with the same name.
+
+Since Git 2.0, Git defaults to the more conservative 'simple'
+behavior, which only pushes the current branch to the corresponding
+remote branch that 'git pull' uses to update the current branch.
+
+See 'git help config' and search for 'push.default' for further information.
+(the 'simple' mode was introduced in Git 1.7.11. Use the similar mode
+'current' instead of 'simple' if you sometimes use older versions of Git)
+
+To https://github.com/99kies/CSDN-VisitorMonitor
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'https://github.com/99kies/CSDN-VisitorMonitor'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.'
