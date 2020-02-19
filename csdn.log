@@ -65,3 +65,4 @@ hint: (e.g., 'git pull ...') before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.'
 2020-02-19,20:43  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
 2020-02-19,20:44  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
+2020-02-20,00:14  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
