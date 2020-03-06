@@ -79,3 +79,18 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.'
 2020-03-02,00:12  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
 2020-03-03,00:15  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
 2020-03-04,00:08  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
+2020-03-05,00:11  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
+2020-03-05,00:11  ==  plot_show_msg(filename):  ==  <built-in method fileno of _io.FileIO object at 0x7f7f1446daf8> returned a result with an error set
+2020-03-05,00:11  ==  Every_day_Update(dirfile)  ==  Cmd('git') failed due to: exit code(128)
+  cmdline: git add --all
+  stderr: 'error: unable to create temporary file: No space left on device
+error: Read_msg/detail_msg.csv: failed to insert into database
+error: unable to index file Read_msg/detail_msg.csv
+fatal: updating files failed'
+2020-03-06,00:13  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
+2020-03-06,00:13  ==  plot_show_msg(filename):  ==  <built-in method fileno of _io.FileIO object at 0x7f7f1446dea0> returned a result with an error set
+2020-03-06,00:13  ==  Every_day_Update(dirfile)  ==  Cmd('git') failed due to: exit code(128)
+  cmdline: git add --all
+  stderr: 'error: file write error (No space left on device)
+fatal: unable to write sha1 file'
+2020-03-07,00:15  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
