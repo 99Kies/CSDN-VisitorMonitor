@@ -99,3 +99,4 @@ fatal: unable to write sha1 file'
 2020-03-10,00:13  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
 2020-03-11,00:15  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
 2020-03-12,00:09  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
+2020-03-13,00:11  ==  save_dict_msg(filename,msgs): (ps: ./Read_msg/compare_day_msg.csv)  ==  2.718281828459045
