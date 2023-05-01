@@ -1,4 +1,4 @@
-Flask==1.1.1
+Flask==2.3.2
 pyquery==1.4.0
 requests==2.22.0
 selenium==3.141.0
